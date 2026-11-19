@@ -1,0 +1,15 @@
+[Unit]
+Description=CyprusTopIndex.com Submissions & Moderation Backend
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/cyprustopindex.com
+EnvironmentFile=/opt/cyprustopindex.com/.env
+ExecStart=/usr/bin/node /opt/cyprustopindex.com/server/submissions-server.mjs
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

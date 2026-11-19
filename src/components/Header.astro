@@ -1,0 +1,123 @@
+---
+import { activePreset, type Locale } from '../config/siteConfig';
+import { resolveCategoryByRouteParam, getCategoryUrl } from '../data/categorySeo';
+
+interface Props {
+  currentLang: Locale;
+  currentPath?: string;
+}
+
+const { currentLang, currentPath = '' } = Astro.props;
+
+function getLangUrl(targetLang: Locale): string {
+  if (!currentPath || currentPath === '/') {
+    return `/${targetLang}/`;
+  }
+  const segments = currentPath.split('/').filter(Boolean);
+  if (segments.length >= 2 && activePreset.locales.includes(segments[0] as Locale)) {
+    const matchedCat = resolveCategoryByRouteParam(segments[1], segments[0] as Locale);
+    if (matchedCat) {
+      const catUrl = getCategoryUrl(matchedCat.slug, targetLang);
+      if (segments.length >= 3) {
+        return `${catUrl}${segments[2]}/`;
+      }
+      return catUrl;
+    }
+  }
+  if (segments.length > 0 && activePreset.locales.includes(segments[0] as Locale)) {
+    segments[0] = targetLang;
+    return `/${segments.join('/')}/`;
+  }
+  return `/${targetLang}/${segments.join('/')}/`;
+}
+
+const navText: Record<Locale, {
+  home: string;
+  catalog: string;
+  principles: string;
+  submit: string;
+}> = {
+  en: {
+    home: 'Home',
+    catalog: 'Directory',
+    principles: 'Methodology',
+    submit: 'Add listing',
+  },
+  el: {
+    home: 'Αρχική',
+    catalog: 'Κατάλογος',
+    principles: 'Μεθοδολογία',
+    submit: 'Προσθήκη',
+  },
+  ru: {
+    home: 'Главная',
+    catalog: 'Каталог',
+    principles: 'Методология',
+    submit: 'Добавить',
+  },
+};
+
+const localeLabels: Record<Locale, string> = {
+  en: 'EN',
+  el: 'EL',
+  ru: 'RU',
+};
+---
+
+<header class="sticky top-0 z-40 bg-cti-bg/95 backdrop-blur-md border-b border-cti-border px-4 py-3 sm:px-6">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3">
+    <a
+      href={`/${currentLang}/`}
+      class="text-[20px] sm:text-[21px] font-bold tracking-[-0.02em] leading-none flex items-center gap-[5px] rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cti-gold group"
+      aria-label="CyprusTopIndex Home"
+    >
+      <span class="text-cti-text group-hover:opacity-90">Cyprus</span>
+      <span class="text-cti-gold">Top</span>
+      <span class="text-cti-text group-hover:opacity-90">Index</span>
+    </a>
+
+    <div class="flex items-center gap-4 sm:gap-6">
+      <nav aria-label="Main navigation" class="hidden md:flex items-center gap-5 text-[13px] font-medium text-cti-muted">
+        <a href={`/${currentLang}/`} class="hover:text-cti-text transition-colors rounded px-1 py-0.5 focus-visible:outline-2 focus-visible:outline-cti-gold">
+          {navText[currentLang].home}
+        </a>
+        <a href={`/${currentLang}/#directory`} class="hover:text-cti-text transition-colors rounded px-1 py-0.5 focus-visible:outline-2 focus-visible:outline-cti-gold">
+          {navText[currentLang].catalog}
+        </a>
+        <a href={`/${currentLang}/#methodology`} class="hover:text-cti-text transition-colors rounded px-1 py-0.5 focus-visible:outline-2 focus-visible:outline-cti-gold">
+          {navText[currentLang].principles}
+        </a>
+        <a href={`/${currentLang}/submit/`} class="text-cti-gold hover:text-cti-text font-semibold transition-colors rounded px-1 py-0.5 focus-visible:outline-2 focus-visible:outline-cti-gold">
+          + {navText[currentLang].submit}
+        </a>
+      </nav>
+
+      <a
+        href={`/${currentLang}/submit/`}
+        class="md:hidden inline-flex items-center px-2.5 py-1 rounded-lg border border-cti-gold/50 bg-cti-bar text-[12px] font-semibold text-cti-text hover:border-cti-gold transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-cti-gold"
+      >
+        + {navText[currentLang].submit}
+      </a>
+
+      <nav aria-label="Language switcher" class="flex items-center text-[13px] tracking-tight">
+        {activePreset.locales.map((lang, idx) => (
+          <>
+            {idx > 0 && <span class="mx-1.5 text-cti-border" aria-hidden="true">|</span>}
+            <a
+              href={getLangUrl(lang)}
+              hreflang={lang}
+              aria-current={currentLang === lang ? 'page' : undefined}
+              class={`px-1 py-0.5 rounded transition-colors focus-visible:outline-2 focus-visible:outline-cti-gold ${
+                currentLang === lang
+                  ? 'font-bold text-cti-text underline decoration-cti-gold decoration-2 underline-offset-4'
+                  : 'font-medium text-cti-langMuted hover:text-cti-text'
+              }`}
+            >
+              {localeLabels[lang]}
+            </a>
+          </>
+        ))}
+      </nav>
+    </div>
+  </div>
+</header>

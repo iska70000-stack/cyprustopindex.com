@@ -1,0 +1,134 @@
+---
+import type { Locale } from '../config/siteConfig';
+import { VERIFIED_CATEGORIES } from '../data/verifiedDirectory';
+import { getCategoryUrl } from '../data/categorySeo';
+import { stripLeadingEmoji } from '../utils/textUtils';
+import freshness from '../data/freshness.json';
+
+interface Props {
+  currentLang: Locale;
+}
+
+const { currentLang } = Astro.props;
+const totalOrgs = VERIFIED_CATEGORIES.reduce((acc, c) => acc + c.items.length, 0);
+const formattedDate = (freshness.formattedDate as Record<Locale, string>)[currentLang] || freshness.lastVerified;
+
+const footerText: Record<Locale, {
+  tagline: string;
+  disclaimer: string;
+  navTitle: string;
+  aboutTitle: string;
+  methodologyLink: string;
+  submitLink: string;
+  llmsLink: string;
+  rights: string;
+  freshnessLabel: string;
+  regionFooter: string;
+}> = {
+  en: {
+    tagline: 'Verified Business & Service Directory of the Republic of Cyprus',
+    disclaimer: `Curated index of ${totalOrgs} verified companies and specialists in Limassol, Nicosia, Larnaca, and Paphos with transparent EUR (€) benchmarks and direct contacts.`,
+    navTitle: 'Cyprus Categories',
+    aboutTitle: 'Methodology & AI Data',
+    methodologyLink: 'Verification Criteria',
+    submitLink: 'Submit a Cyprus Business',
+    llmsLink: 'AI Knowledge Map (/llms.txt)',
+    rights: 'All rights reserved.',
+    freshnessLabel: 'Last verified',
+    regionFooter: 'Limassol • Nicosia • Larnaca • Paphos • 2026',
+  },
+  el: {
+    tagline: 'Επαληθευμένος Κατάλογος Επιχειρήσεων & Υπηρεσιών Κύπρου',
+    disclaimer: `Επιμελημένος κατάλογος ${totalOrgs} επαληθευμένων εταιρειών σε Λεμεσό, Λευκωσία, Λάρνακα και Πάφο με διαφανείς τιμές σε EUR (€) και άμεσες επαφές.`,
+    navTitle: 'Κατηγορίες Κύπρου',
+    aboutTitle: 'Μεθοδολογία & Δεδομένα',
+    methodologyLink: 'Κριτήρια Επαλήθευσης',
+    submitLink: 'Προσθήκη Επιχείρησης',
+    llmsLink: 'Χάρτης Γνώσης AI (/llms.txt)',
+    rights: 'Με επιφύλαξη παντός δικαιώματος.',
+    freshnessLabel: 'Τελευταίος έλεγχος',
+    regionFooter: 'Λεμεσός • Λευκωσία • Λάρνακα • Πάφος • 2026',
+  },
+  ru: {
+    tagline: 'Проверенный справочник бизнесов и сервисов Республики Кипр',
+    disclaimer: `Курируемый каталог ${totalOrgs} проверенных компаний и специалистов в Лимассоле, Никосии, Ларнаке и Пафосе с ценами в EUR (€) и прямыми контактами.`,
+    navTitle: 'Категории Кипра',
+    aboutTitle: 'Методология и AI-данные',
+    methodologyLink: 'Критерии отбора',
+    submitLink: 'Добавить компанию на Кипре',
+    llmsLink: 'Карта для AI (/llms.txt)',
+    rights: 'Все права защищены.',
+    freshnessLabel: 'Последняя проверка',
+    regionFooter: 'Лимассол • Никосия • Ларнака • Пафос • 2026',
+  },
+};
+
+const ft = footerText[currentLang];
+---
+
+<footer class="border-t border-cti-border bg-cti-bar mt-12 pb-20 md:pb-8">
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <div class="text-[19px] font-bold tracking-[-0.02em] flex items-center gap-1 mb-2">
+          <span class="text-cti-text">Cyprus</span>
+          <span class="text-cti-gold">Top</span>
+          <span class="text-cti-text">Index</span>
+        </div>
+        <p class="text-xs font-semibold text-cti-text mb-1.5">{ft.tagline}</p>
+        <p class="text-xs text-cti-muted leading-relaxed">{ft.disclaimer}</p>
+        <p class="mt-3 text-[11px] font-mono text-cti-muted">
+          {ft.freshnessLabel}: <time datetime={freshness.lastVerified}>{formattedDate}</time>
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-mono uppercase tracking-wider font-bold text-cti-text mb-3">{ft.navTitle}</h2>
+        <ul class="space-y-2 text-xs text-cti-muted">
+          {VERIFIED_CATEGORIES.map((cat) => (
+            <li>
+              <a
+                href={getCategoryUrl(cat.slug, currentLang)}
+                class="hover:text-cti-text transition-colors inline-flex items-center gap-1.5 rounded focus-visible:outline-2 focus-visible:outline-cti-gold"
+              >
+                <span aria-hidden="true">{cat.icon}</span>
+                <span>{stripLeadingEmoji(cat.titles[currentLang])}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-mono uppercase tracking-wider font-bold text-cti-text mb-3">{ft.aboutTitle}</h2>
+        <ul class="space-y-2 text-xs text-cti-muted">
+          <li>
+            <a href={`/${currentLang}/#methodology`} class="hover:text-cti-text transition-colors rounded focus-visible:outline-2 focus-visible:outline-cti-gold">
+              {ft.methodologyLink}
+            </a>
+          </li>
+          <li>
+            <a href={`/${currentLang}/submit/`} class="hover:text-cti-text font-semibold text-cti-gold transition-colors rounded focus-visible:outline-2 focus-visible:outline-cti-gold">
+              + {ft.submitLink}
+            </a>
+          </li>
+          <li>
+            <a href="/llms.txt" class="hover:text-cti-text transition-colors font-mono rounded focus-visible:outline-2 focus-visible:outline-cti-gold">
+              {ft.llmsLink}
+            </a>
+          </li>
+          <li>
+            <a href="/api/directory.json" class="hover:text-cti-text transition-colors font-mono rounded focus-visible:outline-2 focus-visible:outline-cti-gold">
+              Open Dataset (/api/directory.json)
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-cti-divider flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-cti-muted">
+      <span>© 2026 CyprusTopIndex.com • {ft.rights}</span>
+      <span class="font-mono">{ft.regionFooter}</span>
+    </div>
+  </div>
+</footer>

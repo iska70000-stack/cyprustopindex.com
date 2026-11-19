@@ -1,0 +1,22 @@
+{
+  "name": "cyprustopindex",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "sync:cyprus": "node scripts/collect-cyprus-businesses.mjs"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.4",
+    "@fontsource/inter": "^5.2.5",
+    "astro": "^5.1.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
