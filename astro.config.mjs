@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://cyprustopindex.com',
+  site: 'https://www.cyprustopindex.com',
   output: 'static',
   integrations: [
     tailwind({

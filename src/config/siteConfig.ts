@@ -220,7 +220,7 @@ export const CATEGORIES_REGISTRY: CategoryMeta[] = [
 
 export const activePreset: SiteConfig = {
   siteName: 'CyprusTopIndex',
-  siteUrl: 'https://cyprustopindex.com',
+  siteUrl: 'https://www.cyprustopindex.com',
   defaultLocale: 'en',
   locales: ['en', 'el', 'ru'],
   currency: 'EUR',
