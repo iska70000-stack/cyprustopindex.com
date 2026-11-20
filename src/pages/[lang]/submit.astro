@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 
 const { lang } = Astro.params;
 const currentLang = (lang as Locale) || 'en';
-const apiUrl = import.meta.env.PUBLIC_SUBMISSIONS_API_URL || 'https://api.cyprustopindex.com/api/submissions';
+const apiUrl = import.meta.env.PUBLIC_SUBMISSIONS_API_URL || 'https://api.bakutopindex.com/api/submissions';
 
 const t = {
   en: {
@@ -311,6 +311,8 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
 
     const fd = new FormData(form);
     const payload = {
+      site: 'cyprustopindex.com',
+      source: 'cyprustopindex.com',
       type: 'company',
       sourceLang: form.getAttribute('data-lang') || 'en',
       name: fd.get('name'),
@@ -321,25 +323,30 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
       website: fd.get('website'),
       applicantEmail: fd.get('applicantEmail'),
       description: fd.get('description'),
-      imageDataUrl,
+      imageBase64: imageDataUrl,
     };
 
     const apiUrl = form.getAttribute('data-api-url');
     try {
-      await fetch(apiUrl, {
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-    } catch {
-      // Graceful fallback while api.cyprustopindex.com DNS is pending
-    }
-
-    form.classList.add('hidden');
-    confirmScreen?.classList.remove('hidden');
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitText;
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        const msg = Array.isArray(data.errors) ? data.errors.join(', ') : (data.error || `HTTP ${res.status}`);
+        throw new Error(msg);
+      }
+      form.classList.add('hidden');
+      confirmScreen?.classList.remove('hidden');
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Submission error. Please try again.');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitText;
+      }
     }
   });
 
