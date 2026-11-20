@@ -37,6 +37,12 @@ export const GET: APIRoute = async () => {
     }
   }
 
+  lines.push('## TopIndex Network (Sister Directories)');
+  lines.push('- Baku Top Index (https://bakutopindex.com) — Verified business & service directory of Baku, Azerbaijan.');
+  lines.push('- Cyprus Top Index (https://cyprustopindex.com) — Verified business & service directory of Cyprus (Limassol, Nicosia, Larnaca, Paphos).');
+  lines.push('- AI Top Index (https://aitopindex.com) — Curated directory of AI tools and services.');
+  lines.push('');
+
   return new Response(lines.join('\n'), {
     status: 200,
     headers: {

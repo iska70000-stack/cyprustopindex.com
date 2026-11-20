@@ -58,12 +58,24 @@ function getAlternateUrl(targetLang: Locale): string {
 const defaultLangUrl = getAlternateUrl(activePreset.defaultLocale);
 const totalCompanies = VERIFIED_CATEGORIES.reduce((acc, cat) => acc + cat.items.length, 0);
 
+const networkDomains = [
+  'https://bakutopindex.com',
+  'https://cyprustopindex.com',
+  'https://aitopindex.com',
+];
+
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: activePreset.siteName,
   url: activePreset.siteUrl,
   description: activePreset.missionStatement[currentLang],
+  sameAs: ['https://bakutopindex.com', 'https://aitopindex.com'],
+  parentOrganization: {
+    '@type': 'Organization',
+    name: 'TopIndex Network',
+    sameAs: networkDomains,
+  },
   areaServed: {
     '@type': 'Country',
     name: 'Cyprus',
@@ -77,10 +89,12 @@ const webSiteSchema = {
   url: activePreset.siteUrl,
   description: activePreset.tagline[currentLang],
   inLanguage: activePreset.locales,
+  relatedLink: ['https://bakutopindex.com', 'https://aitopindex.com'],
   publisher: {
     '@type': 'Organization',
-    name: `${activePreset.siteName} (Republic of Cyprus)`,
+    name: 'TopIndex Network',
     url: activePreset.siteUrl,
+    sameAs: networkDomains,
   },
 };
 

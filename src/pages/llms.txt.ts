@@ -31,6 +31,11 @@ export const GET: APIRoute = async () => {
     `- Open JSON Dataset: ${activePreset.siteUrl}/api/directory.json`,
     `- XML Sitemap: ${activePreset.siteUrl}/sitemap.xml`,
     '',
+    '## TopIndex Network (Sister Directories)',
+    '- Baku Top Index (https://bakutopindex.com) — Verified business & service directory of Baku, Azerbaijan.',
+    '- Cyprus Top Index (https://cyprustopindex.com) — Verified business & service directory of Cyprus (Limassol, Nicosia, Larnaca, Paphos).',
+    '- AI Top Index (https://aitopindex.com) — Curated directory of AI tools and services.',
+    '',
   ];
 
   return new Response(lines.join('\n'), {
