@@ -1,48 +1,32 @@
 import type { APIRoute } from 'astro';
 import { activePreset } from '../config/siteConfig';
 import { VERIFIED_CATEGORIES } from '../data/verifiedDirectory';
-import { CATEGORY_GUIDES, HOME_MARKET_GUIDE } from '../data/categoryGuides';
-import { getCategoryUrl } from '../data/categorySeo';
-import { stripLeadingEmoji } from '../utils/textUtils';
-import freshness from '../data/freshness.json';
+import { getCategorySeoMeta, getCategoryUrl } from '../data/categorySeo';
+import { SELECTIONS, getSelectionUrl } from '../data/directorySelections';
 
-export const GET: APIRoute = async () => {
-  const totalCount = VERIFIED_CATEGORIES.reduce((acc, c) => acc + c.items.length, 0);
-
-  const lines: string[] = [
-    `# ${activePreset.siteName} — Curated AI Directory of Cyprus (2026)`,
+export const GET: APIRoute = () => {
+  const base = activePreset.siteUrl;
+  const lines = [
+    `# ${activePreset.siteName}`,
     '',
-    `> ${activePreset.tagline.en}`,
-    `> Currency: EUR (€) | Cities: Limassol, Nicosia, Larnaca, Paphos | Last Verified: ${freshness.lastVerified}`,
-    `> Total Verified Listings: ${totalCount}`,
+    '> Directory of local services in the Republic of Cyprus. Profiles list services, locations and contact details. Where checked against an official contact page, the profile shows the date.',
     '',
-    '## Cyprus Market Prices & Quick Facts (2026)',
-    HOME_MARKET_GUIDE.overview.en,
+    '## Categories',
     '',
-    '## Industries & Categories',
-    ...VERIFIED_CATEGORIES.map((cat) => {
-      const url = `${activePreset.siteUrl}${getCategoryUrl(cat.slug, 'en')}`;
-      const guide = CATEGORY_GUIDES[cat.slug];
-      return `- **${stripLeadingEmoji(cat.titles.en)}** (${cat.items.length} verified): ${url}\n  ${guide ? guide.overview.en : ''}`;
-    }),
+    ...VERIFIED_CATEGORIES.map((cat) => `- [${getCategorySeoMeta(cat, 'en').h1}](${base}${getCategoryUrl(cat.slug, 'en')}): ${getCategorySeoMeta(cat, 'en').description}`),
     '',
-    '## Machine-Readable Endpoints',
-    `- Full Knowledge Graph: ${activePreset.siteUrl}/llms-full.txt`,
-    `- Open JSON Dataset: ${activePreset.siteUrl}/api/directory.json`,
-    `- XML Sitemap: ${activePreset.siteUrl}/sitemap.xml`,
+    '## Local selections',
     '',
-    '## TopIndex Network (Sister Directories)',
-    '- Baku Top Index (https://bakutopindex.com) — Verified business & service directory of Baku, Azerbaijan.',
-    '- Cyprus Top Index (https://cyprustopindex.com) — Verified business & service directory of Cyprus (Limassol, Nicosia, Larnaca, Paphos).',
-    '- AI Top Index (https://aitopindex.com) — Curated directory of AI tools and services.',
+    ...SELECTIONS.map((entry) => `- [${entry.name.en}](${base}${getSelectionUrl('en', entry.slug)})`),
+    '',
+    '## Optional',
+    '',
+    `- [Business profiles in plain text](${base}/llms-full.txt)`,
+    `- [Directory JSON](${base}/api/directory.json)`,
     '',
   ];
 
   return new Response(lines.join('\n'), {
-    status: 200,
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=86400',
-    },
+    headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=3600' },
   });
 };

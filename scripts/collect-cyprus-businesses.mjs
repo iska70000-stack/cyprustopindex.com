@@ -5,7 +5,7 @@
  *
  * Features:
  * 1. Optional Google Places API (New) fetcher when GOOGLE_PLACES_API_KEY is set.
- * 2. Strict quality gate: rating >= 4.3, +357 phone code, valid website URL, physical Cyprus address.
+ * 2. Strict quality gate: +357 phone code, street address and a valid URL if supplied.
  * 3. Live HTTP verification (--verify) of company websites.
  * 4. Generates src/data/verifiedDirectory.ts and src/data/freshness.json.
  */
@@ -102,13 +102,12 @@ async function verifyWebsite(url, timeoutMs = 7000) {
 }
 
 function passesQualityFilter(item) {
-  const hasRating = typeof item.rating === 'number' && item.rating >= 4.3;
   const hasCyprusPhone =
     Array.isArray(item.phones) &&
     item.phones.some((p) => String(p).replace(/\s+/g, '').startsWith('+357'));
-  const hasWebsite = typeof item.website === 'string' && /^https?:\/\/.+/.test(item.website);
+  const hasWebsite = !item.website || /^https?:\/\/.+/.test(item.website);
   const hasAddress = Boolean(item.address?.en && item.address.en.length > 5);
-  return hasRating && hasCyprusPhone && hasWebsite && hasAddress;
+  return hasCyprusPhone && hasWebsite && hasAddress;
 }
 
 async function fetchGooglePlacesIfConfigured() {
@@ -170,12 +169,12 @@ async function main() {
   }
 
   const passed = raw.filter(passesQualityFilter);
-  console.log(`[Quality Gate] ${passed.length}/${raw.length} businesses passed (>=4.3★, +357 phone, website, address).`);
+  console.log(`[Quality Gate] ${passed.length}/${raw.length} businesses passed (+357 phone, address, valid website if supplied).`);
 
   if (shouldVerifyHttp) {
     console.log('[HTTP Check] Verifying live website reachability...');
     const results = await Promise.all(
-      passed.map(async (item) => {
+      passed.filter((item) => item.website).map(async (item) => {
         const check = await verifyWebsite(item.website);
         return { id: item.id, url: item.website, ...check };
       })
@@ -224,6 +223,7 @@ async function main() {
         phones: x.phones,
         ...(x.whatsapp ? { whatsapp: x.whatsapp } : {}),
         website: x.website,
+        ...(x.contactCheckedOn ? { contactCheckedOn: x.contactCheckedOn } : {}),
         verifiedDate: isoDate,
       }));
     return {
@@ -254,6 +254,7 @@ export interface DirectoryItem {
   image?: string;
   languages?: string[];
   verifiedDate?: string;
+  contactCheckedOn?: string;
 }
 
 export interface DirectoryCategory {

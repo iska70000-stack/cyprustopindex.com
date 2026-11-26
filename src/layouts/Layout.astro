@@ -1,11 +1,9 @@
 ---
 import { activePreset, type Locale } from '../config/siteConfig';
 import { resolveCategoryByRouteParam, getCategoryUrl } from '../data/categorySeo';
-import { VERIFIED_CATEGORIES } from '../data/verifiedDirectory';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import JsonLd from '../components/JsonLd.astro';
-import freshness from '../data/freshness.json';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
@@ -56,81 +54,28 @@ function getAlternateUrl(targetLang: Locale): string {
 }
 
 const defaultLangUrl = getAlternateUrl(activePreset.defaultLocale);
-const totalCompanies = VERIFIED_CATEGORIES.reduce((acc, cat) => acc + cat.items.length, 0);
-
-const networkDomains = [
-  'https://bakutopindex.com',
-  'https://cyprustopindex.com',
-  'https://aitopindex.com',
-];
-
-const organizationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: activePreset.siteName,
-  url: activePreset.siteUrl,
-  description: activePreset.missionStatement[currentLang],
-  sameAs: ['https://bakutopindex.com', 'https://aitopindex.com'],
-  parentOrganization: {
+const organizationId = `${activePreset.siteUrl}/#organization`;
+const logoUrl = `${activePreset.siteUrl}/favicon.png`;
+const socialImageUrl = `${activePreset.siteUrl}/social-card.png`;
+const ogLocales: Record<Locale, string> = { en: 'en_GB', el: 'el_CY', ru: 'ru_RU' };
+const combinedSchemas = [
+  {
+    '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'TopIndex Network',
-    sameAs: networkDomains,
-  },
-  areaServed: {
-    '@type': 'Country',
-    name: 'Cyprus',
-  },
-};
-
-const webSiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: activePreset.siteName,
-  url: activePreset.siteUrl,
-  description: activePreset.tagline[currentLang],
-  inLanguage: activePreset.locales,
-  relatedLink: ['https://bakutopindex.com', 'https://aitopindex.com'],
-  publisher: {
-    '@type': 'Organization',
-    name: 'TopIndex Network',
-    url: activePreset.siteUrl,
-    sameAs: networkDomains,
-  },
-};
-
-const datasetSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Dataset',
-  name: `${activePreset.siteName} Verified Directory of Cyprus (${totalCompanies} listings)`,
-  description: activePreset.tagline[currentLang],
-  url: canonicalUrl,
-  license: 'https://creativecommons.org/licenses/by/4.0/',
-  dateModified: freshness.lastVerified,
-  isAccessibleForFree: true,
-  inLanguage: currentLang,
-  creator: {
-    '@type': 'Organization',
+    '@id': organizationId,
     name: activePreset.siteName,
     url: activePreset.siteUrl,
+    logo: logoUrl,
   },
-  distribution: [
-    {
-      '@type': 'DataDownload',
-      encodingFormat: 'application/json',
-      contentUrl: `${activePreset.siteUrl}/api/directory.json`,
-    },
-    {
-      '@type': 'DataDownload',
-      encodingFormat: 'text/plain',
-      contentUrl: `${activePreset.siteUrl}/llms-full.txt`,
-    },
-  ],
-};
-
-const combinedSchemas = [
-  organizationSchema,
-  webSiteSchema,
-  datasetSchema,
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${activePreset.siteUrl}/#website`,
+    name: activePreset.siteName,
+    url: activePreset.siteUrl,
+    inLanguage: activePreset.locales,
+    publisher: { '@id': organizationId },
+  },
   ...(Array.isArray(schema) ? schema : schema ? [schema] : []),
 ];
 ---
@@ -141,24 +86,17 @@ const combinedSchemas = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23231F1B'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23DEC7A3'%3EC%3C/text%3E%3C/svg%3E" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="zFzrjxTXaXUfxpdqwswtKnFutcCFAxcR79bFGTsZSq0" />
     <link rel="canonical" href={canonicalUrl} />
-    <meta name="dateModified" content={freshness.lastVerified} />
     <link rel="alternate" type="application/json" href={`${activePreset.siteUrl}/api/directory.json`} title="CyprusTopIndex Verified Open Dataset (JSON)" />
     <link rel="alternate" type="text/plain" href={`${activePreset.siteUrl}/llms.txt`} title="CyprusTopIndex LLM Summary" />
 
     {noindex ? (
-      <>
-        <meta name="robots" content="noindex, nofollow" />
-        <meta name="googlebot" content="noindex, nofollow" />
-      </>
+      <meta name="robots" content="noindex, follow" />
     ) : (
-      <>
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-        <meta name="googlebot" content="index, follow" />
-      </>
+      <meta name="robots" content="index, follow, max-image-preview:large" />
     )}
 
     {activePreset.locales.map((lang) => (
@@ -171,9 +109,17 @@ const combinedSchemas = [
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:locale" content={currentLang} />
+    <meta property="og:locale" content={ogLocales[currentLang]} />
+    {activePreset.locales.filter((lang) => lang !== currentLang).map((lang) => (
+      <meta property="og:locale:alternate" content={ogLocales[lang]} />
+    ))}
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={activePreset.siteName} />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={socialImageUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
@@ -192,17 +138,6 @@ const combinedSchemas = [
     <div id="main-content" class="flex-1">
       <slot />
     </div>
-
-    {!currentPath.includes('/submit') && (
-      <a
-        href={`/${currentLang}/submit/`}
-        aria-label={currentLang === 'el' ? 'Προσθήκη Επιχείρησης' : currentLang === 'ru' ? 'Добавить бизнес' : 'Add Business'}
-        class="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-40 inline-flex items-center gap-2 rounded-full bg-cti-text px-4 py-2.5 text-xs font-semibold text-cti-surface shadow-lg border border-cti-gold/40 hover:bg-cti-gold hover:text-cti-text transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cti-gold"
-      >
-        <span aria-hidden="true">+</span>
-        <span>{currentLang === 'el' ? 'Προσθήκη' : currentLang === 'ru' ? 'Добавить бизнес' : 'Add Business'}</span>
-      </a>
-    )}
 
     <Footer currentLang={currentLang} />
 

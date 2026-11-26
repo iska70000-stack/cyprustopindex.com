@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import DirectoryMain from '../../components/DirectoryMain.astro';
 import { activePreset, type Locale } from '../../config/siteConfig';
 import { VERIFIED_CATEGORIES } from '../../data/verifiedDirectory';
-import { CATEGORY_GUIDES } from '../../data/categoryGuides';
+import { HOME_COPY, getCategoryUrl, getCategorySeoMeta } from '../../data/categorySeo';
 
 export async function getStaticPaths() {
   return activePreset.locales.map((lang) => ({
@@ -14,71 +14,26 @@ export async function getStaticPaths() {
 const { lang } = Astro.params;
 const currentLang = (lang as Locale) || 'en';
 
-const titles: Record<Locale, string> = {
-  en: 'CyprusTopIndex — Verified Businesses & Services in Cyprus (2026)',
-  el: 'CyprusTopIndex — Επαληθευμένες Επιχειρήσεις στην Κύπρο (2026)',
-  ru: 'CyprusTopIndex — Проверенные компании и сервисы Кипра (2026)',
-};
-
-const descriptions: Record<Locale, string> = {
-  en: 'Curated directory of verified businesses in Limassol, Nicosia, Larnaca, and Paphos with 2026 EUR (€) market prices and direct contacts.',
-  el: 'Επιμελημένος κατάλογος επαληθευμένων επιχειρήσεων σε Λεμεσό, Λευκωσία, Λάρνακα και Πάφο με τιμές αγοράς EUR (€) 2026.',
-  ru: 'Курируемый справочник проверенных компаний в Лимассоле, Никосии, Ларнаке и Пафосе с ценами в EUR (€) на 2026 год.',
-};
-
-const schemaItems = VERIFIED_CATEGORIES.flatMap((cat) =>
-  cat.items.map((item) => ({
-    '@type': 'LocalBusiness',
-    name: item.name[currentLang] || item.name.en,
-    description: item.description[currentLang] || item.description.en,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: item.address[currentLang] || item.address.en,
-      addressLocality: item.city,
-      addressCountry: 'CY',
-    },
-    ...(item.phones && item.phones.length > 0 ? { telephone: item.phones[0] } : {}),
-    ...(item.website ? { url: item.website } : {}),
-  }))
-);
-
-const itemListSchema = {
+const [title, description] = HOME_COPY[currentLang];
+const categoryList = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: titles[currentLang],
-  description: descriptions[currentLang],
-  numberOfItems: schemaItems.length,
-  itemListElement: schemaItems.map((item, index) => ({
+  name: title,
+  itemListElement: VERIFIED_CATEGORIES.map((cat, index) => ({
     '@type': 'ListItem',
     position: index + 1,
-    item,
+    name: getCategorySeoMeta(cat, currentLang).h1,
+    url: `${activePreset.siteUrl}${getCategoryUrl(cat.slug, currentLang)}`,
   })),
 };
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: Object.values(CATEGORY_GUIDES).flatMap((guide) =>
-    guide.faqs.slice(0, 1).map((faq) => ({
-      '@type': 'Question',
-      name: faq.question[currentLang] || faq.question.en,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer[currentLang] || faq.answer.en,
-      },
-    }))
-  ),
-};
-
-const combinedSchema = [itemListSchema, faqSchema];
 ---
 
 <Layout
-  title={titles[currentLang]}
-  description={descriptions[currentLang]}
+  title={title}
+  description={description}
   currentLang={currentLang}
   currentPath={`/${currentLang}/`}
-  schema={combinedSchema}
+  schema={categoryList}
 >
   <DirectoryMain currentLang={currentLang} />
 </Layout>

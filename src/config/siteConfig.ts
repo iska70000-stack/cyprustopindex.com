@@ -225,8 +225,11 @@ export const activePreset: SiteConfig = {
   locales: ['en', 'el', 'ru'],
   currency: 'EUR',
   currencySymbol: '€',
-  // Set PUBLIC_ALLOW_INDEXING=true in Vercel env vars once cyprustopindex.com domain is attached
-  allowIndexing: import.meta.env.PUBLIC_ALLOW_INDEXING === 'true',
+  // Vercel previews stay private to search, even if their variables mirror production.
+  allowIndexing:
+    import.meta.env.VERCEL_ENV !== 'preview' &&
+    import.meta.env.PUBLIC_ALLOW_INDEXING !== 'false' &&
+    (import.meta.env.VERCEL_ENV === 'production' || import.meta.env.PUBLIC_ALLOW_INDEXING === 'true'),
   region: 'cyprus',
   cities: ['Limassol', 'Nicosia', 'Larnaca', 'Paphos'],
   regionNames: {

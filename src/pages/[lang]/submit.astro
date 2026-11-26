@@ -12,14 +12,14 @@ export async function getStaticPaths() {
 
 const { lang } = Astro.params;
 const currentLang = (lang as Locale) || 'en';
-const apiUrl = import.meta.env.PUBLIC_SUBMISSIONS_API_URL || 'https://api.bakutopindex.com/api/submissions';
+const apiUrl = '/api/submissions';
 
 const t = {
   en: {
     title: 'Add Business to CyprusTopIndex | Free Verification',
-    desc: 'Submit your licensed company in Limassol, Nicosia, Larnaca, or Paphos for verification and priority listing.',
+    desc: 'Apply to add your company to the CyprusTopIndex directory. Include your services and contact details for editorial review.',
     h1: 'Add Business to CyprusTopIndex',
-    subtitle: 'Fast editorial verification for companies and specialists in the Republic of Cyprus. No registration fee.',
+    subtitle: 'Submit your company’s services and contacts for editorial review. Applying is free.',
     nameLabel: 'Business or Specialist Name *',
     catLabel: 'Industry Category *',
     cityLabel: 'City *',
@@ -32,17 +32,14 @@ const t = {
     submitBtn: 'Submit for Moderation',
     submittingBtn: 'Submitting...',
     confirmTitle: 'Application received for moderation!',
-    confirmText:
-      'Your application has been accepted for moderation. Want to speed up verification and get priority status? Place the Cyprus Top Index badge on your website or social media:',
-    copyBadgeBtn: 'Copy HTML Badge Code',
-    copiedBadgeBtn: 'Copied!',
-    badgePreviewLabel: 'Badge Preview:',
+    confirmText: 'We will use the email address you provided for updates about your application.',
+    submissionError: 'We couldn’t send the application. Check your connection and try again.',
   },
   el: {
     title: 'Προσθήκη Επιχείρησης | CyprusTopIndex',
     desc: 'Υποβάλετε την επιχείρησή σας σε Λεμεσό, Λευκωσία, Λάρνακα ή Πάφο για επαλήθευση.',
     h1: 'Προσθήκη Επιχείρησης στο CyprusTopIndex',
-    subtitle: 'Γρήγορη συντακτική επαλήθευση για επιχειρήσεις στην Κυπριακή Δημοκρατία.',
+    subtitle: 'Υποβάλετε δωρεάν τις υπηρεσίες και τα στοιχεία επικοινωνίας της επιχείρησής σας για έλεγχο.',
     nameLabel: 'Επωνυμία Επιχείρησης *',
     catLabel: 'Κατηγορία Κλάδου *',
     cityLabel: 'Πόλη *',
@@ -55,17 +52,14 @@ const t = {
     submitBtn: 'Υποβολή για Έλεγχο',
     submittingBtn: 'Αποστολή...',
     confirmTitle: 'Η αίτηση ελήφθη για έλεγχο!',
-    confirmText:
-      'Η αίτησή σας έγινε δεκτή για έλεγχο. Θέλετε να επιταχύνετε την επαλήθευση και να λάβετε προτεραιότητα; Τοποθετήστε το σήμα Cyprus Top Index στον ιστότοπό σας ή στα κοινωνικά δίκτυα:',
-    copyBadgeBtn: 'Αντιγραφή Κώδικα HTML',
-    copiedBadgeBtn: 'Αντιγράφηκε!',
-    badgePreviewLabel: 'Προεπισκόπηση Σήματος:',
+    confirmText: 'Θα χρησιμοποιήσουμε το email που δηλώσατε για ενημερώσεις σχετικά με την αίτησή σας.',
+    submissionError: 'Η αίτηση δεν στάλθηκε. Ελέγξτε τη σύνδεσή σας και προσπαθήστε ξανά.',
   },
   ru: {
     title: 'Добавить бизнес на Кипре | CyprusTopIndex',
     desc: 'Быстрая заявка на добавление компании в Лимассоле, Никосии, Ларнаке или Пафосе.',
     h1: 'Добавить бизнес в CyprusTopIndex',
-    subtitle: 'Бесплатная проверка для компаний и специалистов Республики Кипр.',
+    subtitle: 'Укажите услуги и контакты компании для редакционной проверки. Подача заявки бесплатна.',
     nameLabel: 'Название компании или имя специалиста *',
     catLabel: 'Сфера деятельности *',
     cityLabel: 'Город *',
@@ -78,15 +72,11 @@ const t = {
     submitBtn: 'Отправить на модерацию',
     submittingBtn: 'Отправка...',
     confirmTitle: 'Заявка принята на модерацию!',
-    confirmText:
-      'Заявка принята на модерацию. Хотите ускорить проверку и получить приоритетный статус? Разместите бейдж Cyprus Top Index на своем сайте или в соцсетях:',
-    copyBadgeBtn: 'Скопировать HTML-код бейджа',
-    copiedBadgeBtn: 'Скопировано!',
-    badgePreviewLabel: 'Как выглядит бейдж:',
+    confirmText: 'Мы будем отправлять обновления о заявке на указанный вами email.',
+    submissionError: 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.',
   },
 }[currentLang];
 
-const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;background:#FDFBF7;border:1px solid #DEC7A3;color:#231F1B;font-family:Inter,system-ui,sans-serif;font-size:13px;font-weight:700;text-decoration:none;"><span style="color:#2E7D43;">✔</span><span>Verified on <span style="color:#96784B;">CyprusTopIndex.com</span></span></a>`;
 ---
 
 <Layout
@@ -94,6 +84,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
   description={t.desc}
   currentLang={currentLang}
   currentPath={`/${currentLang}/submit/`}
+  noindex
 >
   <main class="mx-auto max-w-2xl px-4 py-8 sm:px-6">
     <h1 class="text-2xl sm:text-3xl font-bold text-cti-text leading-tight">{t.h1}</h1>
@@ -115,7 +106,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
           minlength="2"
           maxlength="120"
           autocomplete="organization"
-          class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+          class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
         />
       </div>
 
@@ -126,7 +117,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
             id="bizCategory"
             name="categorySlug"
             required
-            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
           >
             {VERIFIED_CATEGORIES.map((cat) => (
               <option value={cat.slug}>{stripLeadingEmoji(cat.titles[currentLang])}</option>
@@ -141,7 +132,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
             name="city"
             required
             autocomplete="address-level2"
-            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
           >
             {activePreset.cities.map((c) => (
               <option value={c}>{c}</option>
@@ -160,7 +151,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
             required
             autocomplete="tel"
             placeholder="+357 25 000 000"
-            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
           />
         </div>
 
@@ -171,7 +162,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
             name="whatsapp"
             type="tel"
             placeholder="+357 99 000 000"
-            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
           />
         </div>
       </div>
@@ -185,7 +176,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
             type="url"
             autocomplete="url"
             placeholder="https://example.com.cy"
-            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
           />
         </div>
 
@@ -198,7 +189,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
             required
             autocomplete="email"
             placeholder="info@example.com.cy"
-            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+            class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
           />
         </div>
       </div>
@@ -212,7 +203,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
           required
           minlength="10"
           maxlength="600"
-          class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-sm text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
+          class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
         ></textarea>
       </div>
 
@@ -227,6 +218,8 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
         />
       </div>
 
+      <p id="submissionError" role="alert" class="hidden text-sm font-medium text-cti-closed"></p>
+
       <button
         id="submitBtn"
         type="submit"
@@ -236,9 +229,10 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
       </button>
     </form>
 
-    <!-- CONFIRMATION & PRIORITY BADGE SCREEN -->
+    <!-- Submission confirmation -->
     <section
       id="confirmationScreen"
+      tabindex="-1"
       aria-live="polite"
       class="hidden mt-6 rounded-2xl bg-cti-surface border border-cti-gold p-6 shadow-md space-y-4"
     >
@@ -249,38 +243,15 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
 
       <p class="text-sm text-cti-text leading-relaxed">{t.confirmText}</p>
 
-      <div class="rounded-xl bg-cti-bar border border-cti-divider p-4 space-y-2">
-        <div class="text-[11px] font-mono uppercase tracking-wider text-cti-muted">{t.badgePreviewLabel}</div>
-        <div set:html={badgeHtmlSnippet} />
-      </div>
-
-      <div>
-        <label for="badgeHtmlCode" class="sr-only">HTML Badge Code</label>
-        <textarea
-          id="badgeHtmlCode"
-          readonly
-          rows="3"
-          class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill p-3 font-mono text-xs text-cti-text focus:outline-none"
-        >{badgeHtmlSnippet}</textarea>
-
-        <button
-          type="button"
-          id="copyBadgeBtn"
-          class="mt-2.5 inline-flex items-center gap-2 rounded-xl bg-cti-gold px-4 py-2 text-xs font-bold text-cti-surface hover:opacity-90 transition cursor-pointer"
-        >
-          {t.copyBadgeBtn}
-        </button>
-      </div>
     </section>
   </main>
 </Layout>
 
-<script define:vars={{ submittingText: t.submittingBtn, submitText: t.submitBtn, copyText: t.copyBadgeBtn, copiedText: t.copiedBadgeBtn }}>
+<script define:vars={{ submittingText: t.submittingBtn, submitText: t.submitBtn, errorText: t.submissionError }}>
   const form = document.getElementById('submitBusinessForm');
   const submitBtn = document.getElementById('submitBtn');
   const confirmScreen = document.getElementById('confirmationScreen');
-  const copyBtn = document.getElementById('copyBadgeBtn');
-  const badgeCode = document.getElementById('badgeHtmlCode');
+  const errorStatus = document.getElementById('submissionError');
   const logoInput = document.getElementById('bizLogo');
 
   let imageDataUrl = '';
@@ -304,6 +275,7 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
       return;
     }
 
+    errorStatus?.classList.add('hidden');
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = submittingText;
@@ -340,26 +312,17 @@ const badgeHtmlSnippet = `<a href="https://cyprustopindex.com/${currentLang}/" t
       }
       form.classList.add('hidden');
       confirmScreen?.classList.remove('hidden');
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Submission error. Please try again.');
+      confirmScreen?.focus();
+    } catch {
+      if (errorStatus) {
+        errorStatus.textContent = errorText;
+        errorStatus.classList.remove('hidden');
+      }
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.textContent = submitText;
       }
-    }
-  });
-
-  copyBtn?.addEventListener('click', async () => {
-    if (!badgeCode) return;
-    try {
-      await navigator.clipboard.writeText(badgeCode.value);
-      copyBtn.textContent = copiedText;
-      setTimeout(() => {
-        copyBtn.textContent = copyText;
-      }, 2000);
-    } catch {
-      badgeCode.select();
     }
   });
 </script>

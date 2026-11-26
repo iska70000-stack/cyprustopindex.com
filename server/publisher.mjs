@@ -49,7 +49,6 @@ export async function publishApprovedSubmission(db, submission, adminUserId) {
     id: entityId,
     category: submission.category_slug,
     city,
-    rating: 4.8,
     name: {
       en: payload.name,
       el: payload.name,
@@ -72,7 +71,7 @@ export async function publishApprovedSubmission(db, submission, adminUserId) {
     },
     phones: payload.phone ? [payload.phone] : [],
     ...(payload.whatsapp ? { whatsapp: payload.whatsapp } : {}),
-    website: payload.website || 'https://cyprustopindex.com',
+    ...(payload.website ? { website: payload.website } : {}),
   };
 
   registry.push(newEntry);

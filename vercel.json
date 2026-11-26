@@ -1,4 +1,13 @@
 {
+  "redirects": [
+    { "source": "/", "destination": "/en/", "permanent": true },
+    { "source": "/en/medical-dental/adamantio-dental-limassol/", "destination": "/en/medical-dental/adamantio-dental-nicosia/", "permanent": true },
+    { "source": "/el/iatrikes-klinikes/adamantio-dental-limassol/", "destination": "/el/iatrikes-klinikes/adamantio-dental-nicosia/", "permanent": true },
+    { "source": "/ru/kliniki-stomatologiya/adamantio-dental-limassol/", "destination": "/ru/kliniki-stomatologiya/adamantio-dental-nicosia/", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/api/submissions", "destination": "https://api.bakutopindex.com/api/submissions" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -18,6 +18,7 @@ export interface DirectoryItem {
   image?: string;
   languages?: string[];
   verifiedDate?: string;
+  contactCheckedOn?: string;
 }
 
 export interface DirectoryCategory {
@@ -938,26 +939,26 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "Budget Rent a Car Cyprus"
         },
         "agency": {
-          "en": "LCA / PFO Terminals & Limassol Amathountos",
-          "el": "Τερματικά LCA / PFO & Λεμεσός",
-          "ru": "Аэропорты LCA/PFO и Лимассол"
+          "en": "Car rental desk at Larnaca Airport",
+          "el": "Γκισέ ενοικίασης στο αεροδρόμιο Λάρνακας",
+          "ru": "Прокат авто в аэропорту Ларнаки"
         },
         "description": {
-          "en": "Value-oriented car rentals across Larnaca (Dromolaxia / LCA), Paphos Airport, and Limassol tourist area (Amathountos Ave).",
-          "el": "Οικονομικές ενοικιάσεις αυτοκινήτων σε Δρομολαξιά/LCA, Αεροδρόμιο Πάφου και Λεωφ. Αμαθούντος στη Λεμεσό.",
-          "ru": "Доступный прокат авто в Дромолаксии (LCA), аэропорту Пафоса и на набережной Аматунтос в Лимассоле."
+          "en": "Budget car rental at Larnaca Airport (LCA). The rental desk is inside the terminal; check pickup, returns and booking terms on Budget’s website.",
+          "el": "Ενοικίαση αυτοκινήτου Budget στο αεροδρόμιο Λάρνακας. Το γκισέ βρίσκεται στον τερματικό σταθμό. Δείτε όρους παραλαβής και επιστροφής.",
+          "ru": "Прокат автомобилей Budget в аэропорту Ларнаки (LCA). Стойка находится в терминале. Условия получения и возврата смотрите на сайте Budget."
         },
         "address": {
-          "en": "39 Ippokratous St, Dromolaxia, 7020 Larnaca",
-          "el": "Ιπποκράτους 39, Δρομολαξιά, 7020 Λάρνακα",
-          "ru": "39 Ippokratous St, Дромолаксия, 7020 Ларнака"
+          "en": "Larnaca International Airport, 6027 Larnaca",
+          "el": "Διεθνές Αεροδρόμιο Λάρνακας, 6027 Λάρνακα",
+          "ru": "Международный аэропорт Ларнаки, 6027 Ларнака"
         },
         "phones": [
-          "+357 24 822666",
-          "+357 25 873535"
+          "+357 24 008707"
         ],
-        "website": "https://www.budget.com",
-        "verifiedDate": "2026-11-19"
+        "website": "https://www.budget.com/en/locations/cy/larnaca/lca",
+        "verifiedDate": "2026-11-19",
+        "contactCheckedOn": "2026-11-26"
       },
       {
         "id": "astra-car-rentals",
@@ -1375,20 +1376,21 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "Современная стоматологическая клиника в Никосии (Строволос): имплантация, элайнеры, хирургия и эстетика."
         },
         "address": {
-          "en": "76 Strovolos Ave, 2018 Strovolos, Nicosia",
-          "el": "Λεωφ. Στροβόλου 76, 2018 Λευκωσία",
-          "ru": "76 Strovolos Ave, 2018 Строволос, Никосия"
+          "en": "76 Strovolos Avenue, 2018 Strovolos, Nicosia",
+          "el": "Λεωφόρος Στροβόλου 76, 2018 Στρόβολος, Λευκωσία",
+          "ru": "76 Strovolos Avenue, 2018 Строволос, Никосия"
         },
         "phones": [
-          "+357 22 232477"
+          "+357 22 112112"
         ],
-        "website": "https://www.smaltodental.com",
-        "verifiedDate": "2026-11-19"
+        "website": "https://smaltoclinic.com/contact-us/",
+        "verifiedDate": "2026-11-19",
+        "contactCheckedOn": "2026-11-26"
       },
       {
-        "id": "adamantio-dental-limassol",
+        "id": "adamantio-dental-nicosia",
         "rank": 6,
-        "city": "Limassol",
+        "city": "Nicosia",
         "rating": 4.8,
         "type": "company",
         "languages": [
@@ -1402,25 +1404,26 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "Стоматологический центр Adamantio"
         },
         "agency": {
-          "en": "Family Dentistry, Implants & Aligners • Limassol",
-          "el": "Οικογενειακή Οδοντιατρική • Λεμεσός",
-          "ru": "Семейная стоматология • Лимассол"
+          "en": "Dental centre in Strovolos",
+          "el": "Οδοντιατρικό κέντρο στον Στρόβολο",
+          "ru": "Стоматологический центр в Строволосе"
         },
         "description": {
-          "en": "Limassol dental practice offering pediatric dentistry, hygiene, invisible aligners, and full oral rehabilitation.",
-          "el": "Οδοντιατρικό κέντρο στη Λεμεσό για παιδοδοντία, καθαρισμούς, αόρατους νάρθηκες και εμφυτεύματα.",
-          "ru": "Стоматологический центр в Лимассоле: детская стоматология, профгигиена, элайнеры и протезирование."
+          "en": "Dental centre in Strovolos, Nicosia offering paediatric dentistry and other dental services. Check appointment details on the centre’s website.",
+          "el": "Οδοντιατρικό κέντρο στον Στρόβολο Λευκωσίας με παιδοδοντία και άλλες υπηρεσίες. Δείτε πληροφορίες για ραντεβού στον ιστότοπο.",
+          "ru": "Стоматологический центр в Строволосе, Никосия. Среди услуг — детская стоматология. Информация о записи есть на сайте центра."
         },
         "address": {
-          "en": "28th October Ave, 3105 Limassol",
-          "el": "Λεωφ. 28ης Οκτωβρίου, 3105 Λεμεσός",
-          "ru": "28th October Ave, 3105 Лимассол"
+          "en": "35 Ifigenias Street, floors 2–3, 2007 Strovolos",
+          "el": "Ιφιγενείας 35, 2ος και 3ος όροφος, 2007 Στρόβολος",
+          "ru": "35 Ifigenias Street, 2–3 этажи, 2007 Строволос"
         },
         "phones": [
-          "+357 25 735050"
+          "+357 22 442288"
         ],
-        "website": "https://www.adamantiodental.com",
-        "verifiedDate": "2026-11-19"
+        "website": "https://adamantio.com/contact-us/",
+        "verifiedDate": "2026-11-19",
+        "contactCheckedOn": "2026-11-26"
       },
       {
         "id": "dr-onisiforou-limassol",
@@ -1439,25 +1442,26 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "Клиника Dr. Onisiforou Dentistry"
         },
         "agency": {
-          "en": "Cosmetic, Laser & Implant Dentistry • Limassol",
-          "el": "Αισθητική & Εμφυτευματολογία • Λεμεσός",
-          "ru": "Лазерная и эстетическая стоматология"
+          "en": "Implants, periodontics and aesthetic dentistry",
+          "el": "Εμφυτεύματα, περιοδοντολογία και αισθητική οδοντιατρική",
+          "ru": "Имплантация, пародонтология и эстетическая стоматология"
         },
         "description": {
-          "en": "Advanced dental clinic on Kolonakiou Ave (Agios Athanasios, Limassol) specializing in porcelain veneers, laser dentistry, and implants.",
-          "el": "Προηγμένη οδοντιατρική κλινική στην Κολωνακίου (Άγιος Αθανάσιος) για όψεις πορσελάνης, laser και εμφυτεύματα.",
-          "ru": "Клиника на ул. Колонакиу в Лимассоле: виниры, лазерное лечение и дентальная имплантация."
+          "en": "Dental clinic in Limassol offering implant dentistry, periodontics and aesthetic dentistry. Appointment requests are available on the clinic’s website.",
+          "el": "Οδοντιατρείο στη Λεμεσό με εμφυτεύματα, περιοδοντολογία και αισθητική οδοντιατρική. Μπορείτε να ζητήσετε ραντεβού από τον ιστότοπο.",
+          "ru": "Стоматология в Лимассоле: имплантация, пародонтология и эстетическая стоматология. Запросить запись можно на сайте клиники."
         },
         "address": {
-          "en": "132 Kolonakiou Ave, Agios Athanasios, 4103 Limassol",
-          "el": "Λεωφ. Κολωνακίου 132, 4103 Λεμεσός",
-          "ru": "132 Kolonakiou Ave, Агиос Афанасиос, 4103 Лимассол"
+          "en": "28 Eptanisou Street, Office 103, 3100 Limassol",
+          "el": "Επτανήσου 28, γραφείο 103, 3100 Λεμεσός",
+          "ru": "28 Eptanisou Street, офис 103, 3100 Лимассол"
         },
         "phones": [
-          "+357 25 322233"
+          "+357 25 586250"
         ],
-        "website": "https://dronisiforou.com",
-        "verifiedDate": "2026-11-19"
+        "website": "https://dronisiforou.com/contact/",
+        "verifiedDate": "2026-11-19",
+        "contactCheckedOn": "2026-11-26"
       },
       {
         "id": "dental-house-larnaca",
@@ -1486,15 +1490,16 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "Современная стоматология на пр. Спиру Киприану в Ларнаке: эндодонтия, коронки и имплантация."
         },
         "address": {
-          "en": "37 Spyrou Kyprianou Ave, 6051 Larnaca",
-          "el": "Λεωφ. Σπύρου Κυπριανού 37, 6051 Λάρνακα",
-          "ru": "37 Spyrou Kyprianou Ave, 6051 Ларнака"
+          "en": "24 Filiou Zannetou, 6022 Larnaca",
+          "el": "Φίλιου Ζαννέτου 24, 6022 Λάρνακα",
+          "ru": "24 Filiou Zannetou, 6022 Ларнака"
         },
         "phones": [
-          "+357 24 812381"
+          "+357 24 657474"
         ],
-        "website": "https://dentalhouse.com.cy",
-        "verifiedDate": "2026-11-19"
+        "website": "https://dentalhouse.com.cy/contact-us/",
+        "verifiedDate": "2026-11-19",
+        "contactCheckedOn": "2026-11-26"
       },
       {
         "id": "evangelismos-hospital-paphos",
@@ -1513,25 +1518,26 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "Частный госпиталь Evangelismos"
         },
         "agency": {
-          "en": "GeSY & Private • 24/7 Emergency • Paphos",
-          "el": "ΓεΣΥ & Ιδιωτικά • Επείγοντα 24/7 • Πάφος",
-          "ru": "GeSY и частный приём • Скорая 24/7 • Пафос"
+          "en": "Private hospital · 24-hour emergency department",
+          "el": "Ιδιωτικό νοσοκομείο · Επείγοντα όλο το 24ωρο",
+          "ru": "Частный госпиталь · Неотложная помощь 24/7"
         },
         "description": {
-          "en": "Leading private hospital in Paphos featuring 24-hour Accident & Emergency, maternity, ICU, surgical theaters, and outpatient clinics.",
-          "el": "Κορυφαίο ιδιωτικό νοσοκομείο στην Πάφο με 24ωρο Τμήμα Ατυχημάτων, μαιευτική και διαγνωστικά εργαστήρια.",
-          "ru": "Главный частный госпиталь Пафоса: круглосуточная неотложная помощь, хирургия, роддом и поликлиника."
+          "en": "Private hospital in Paphos with a 24-hour emergency department. Check departments and admissions on the hospital website.",
+          "el": "Ιδιωτικό νοσοκομείο στην Πάφο με τμήμα επειγόντων όλο το 24ωρο. Δείτε τα τμήματα και τις πληροφορίες εισαγωγής στον ιστότοπο.",
+          "ru": "Частный госпиталь в Пафосе с круглосуточным отделением неотложной помощи. На сайте больницы есть список отделений и условия приёма."
         },
         "address": {
-          "en": "88 Voriou Ipeirou St, 8036 Paphos",
-          "el": "Βορείου Ηπείρου 88, 8036 Πάφος",
-          "ru": "88 Voriou Ipeirou St, 8036 Пафос"
+          "en": "87 Vasileos Constantinou, 8021 Paphos",
+          "el": "Βασιλέως Κωνσταντίνου 87, 8021 Πάφος",
+          "ru": "87 Vasileos Constantinou, 8021 Пафос"
         },
         "phones": [
           "+357 26 848000"
         ],
-        "website": "https://evangelismos.com.cy",
-        "verifiedDate": "2026-11-19"
+        "website": "https://www.evangelismos.com.cy/contacts/",
+        "verifiedDate": "2026-11-19",
+        "contactCheckedOn": "2026-11-26"
       },
       {
         "id": "harbour-medical-paphos",
@@ -1764,8 +1770,9 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
         "phones": [
           "+357 22 463600"
         ],
-        "website": "https://odysseycs.com",
-        "verifiedDate": "2026-11-19"
+        "website": "https://odysseycs.com/contact-us/",
+        "verifiedDate": "2026-11-19",
+        "contactCheckedOn": "2026-11-26"
       },
       {
         "id": "pwc-cyprus",

@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 import { activePreset } from '../../config/siteConfig';
 import { VERIFIED_CATEGORIES } from '../../data/verifiedDirectory';
-import { CATEGORY_GUIDES, HOME_MARKET_GUIDE } from '../../data/categoryGuides';
-import freshness from '../../data/freshness.json';
+import { CATEGORY_GUIDES } from '../../data/categoryGuides';
+import { getProfileUrl } from '../../data/categorySeo';
 
 export const GET: APIRoute = async () => {
   const payload = {
@@ -11,13 +11,19 @@ export const GET: APIRoute = async () => {
     region: 'Republic of Cyprus',
     cities: activePreset.cities,
     currency: activePreset.currency,
-    lastVerified: freshness.lastVerified,
-    marketFacts2026: HOME_MARKET_GUIDE,
+    lastVerified: null,
+    marketFacts2026: null,
     categories: VERIFIED_CATEGORIES.map((cat) => ({
       slug: cat.slug,
       titles: cat.titles,
-      marketGuide: CATEGORY_GUIDES[cat.slug] || null,
-      items: cat.items,
+      marketGuide: null,
+      guide: CATEGORY_GUIDES[cat.slug] || null,
+      items: cat.items.map(({ rating, languages, pinned_rank, verifiedDate, ...item }) => ({
+        ...item,
+        profiles: Object.fromEntries(activePreset.locales.map((lang) => [
+          lang, `${activePreset.siteUrl}${getProfileUrl(cat.slug, item.id, lang)}`,
+        ])),
+      })),
     })),
   };
 
