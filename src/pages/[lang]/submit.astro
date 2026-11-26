@@ -13,6 +13,8 @@ export async function getStaticPaths() {
 const { lang } = Astro.params;
 const currentLang = (lang as Locale) || 'en';
 const apiUrl = '/api/submissions';
+const minDescriptionLength = 10;
+const maxDescriptionLength = 150;
 
 const t = {
   en: {
@@ -26,7 +28,7 @@ const t = {
     webLabel: 'Official Website',
     phoneLabel: 'Phone (+357) *',
     waLabel: 'WhatsApp (+357)',
-    descLabel: 'Short Description (10–600 chars) *',
+    descLabel: `Short Description (${minDescriptionLength}–${maxDescriptionLength} chars) *`,
     logoLabel: 'Company Logo (optional, JPG/PNG/WebP, max 2 MB)',
     emailLabel: 'Contact Email (private, for status updates) *',
     submitBtn: 'Submit for Moderation',
@@ -46,7 +48,7 @@ const t = {
     webLabel: 'Επίσημος Ιστότοπος',
     phoneLabel: 'Τηλέφωνο (+357) *',
     waLabel: 'WhatsApp (+357)',
-    descLabel: 'Σύντομη Περιγραφή (10–600 χαρακτήρες) *',
+    descLabel: `Σύντομη Περιγραφή (${minDescriptionLength}–${maxDescriptionLength} χαρακτήρες) *`,
     logoLabel: 'Λογότυπο (προαιρετικό, JPG/PNG/WebP, έως 2 MB)',
     emailLabel: 'Email Επικοινωνίας (ιδιωτικό) *',
     submitBtn: 'Υποβολή για Έλεγχο',
@@ -66,7 +68,7 @@ const t = {
     webLabel: 'Официальный сайт',
     phoneLabel: 'Телефон (+357) *',
     waLabel: 'WhatsApp (+357)',
-    descLabel: 'Краткое описание услуг (10–600 символов) *',
+    descLabel: `Краткое описание услуг (${minDescriptionLength}–${maxDescriptionLength} символов) *`,
     logoLabel: 'Логотип компании (необязательно, JPG/PNG/WebP до 2 МБ)',
     emailLabel: 'Email для уведомлений (не публикуется) *',
     submitBtn: 'Отправить на модерацию',
@@ -201,8 +203,8 @@ const t = {
           name="description"
           rows="3"
           required
-          minlength="10"
-          maxlength="600"
+          minlength={minDescriptionLength}
+          maxlength={maxDescriptionLength}
           class="w-full rounded-xl border border-cti-inputBorder bg-cti-pill px-3.5 py-2 text-base text-cti-text focus:border-cti-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-cti-gold/40"
         ></textarea>
       </div>

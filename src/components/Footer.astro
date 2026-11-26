@@ -10,6 +10,7 @@ interface Props {
 
 const { currentLang } = Astro.props;
 const totalOrgs = VERIFIED_CATEGORIES.reduce((acc, c) => acc + c.items.length, 0);
+const contactEmail = 'iska70000@gmail.com';
 
 const footerText: Record<Locale, {
   tagline: string;
@@ -71,6 +72,9 @@ const ft = footerText[currentLang];
         </div>
         <p class="text-xs font-semibold text-cti-text mb-1.5">{ft.tagline}</p>
         <p class="text-xs text-cti-muted leading-relaxed">{ft.disclaimer}</p>
+        <a href={`mailto:${contactEmail}`} class="mt-1 inline-flex min-h-11 items-center text-sm font-semibold text-cti-text underline decoration-cti-gold underline-offset-4 hover:decoration-current">
+          {contactEmail}
+        </a>
       </div>
 
       <div>
