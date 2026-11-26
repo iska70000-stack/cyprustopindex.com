@@ -455,10 +455,10 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "195 Makarios III Ave, Neocleous House, 3030 Лимассол"
         },
         "phones": [
-          "+357 25 110110",
-          "+357 22 110300"
+          "+357 25 110110"
         ],
-        "website": "https://neo.law",
+        "website": "https://neo.law/contact",
+        "contactCheckedOn": "2026-11-26",
         "verifiedDate": "2026-11-19"
       },
       {
@@ -493,10 +493,10 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "17 Stasinou Ave, 1060 Никосия"
         },
         "phones": [
-          "+357 22 757675",
-          "+357 25 508200"
+          "+357 22 447777"
         ],
-        "website": "https://www.kyprianou.com",
+        "website": "https://www.kyprianou.com/contact-us/",
+        "contactCheckedOn": "2026-11-26",
         "verifiedDate": "2026-11-19"
       },
       {
@@ -533,7 +533,8 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
         "phones": [
           "+357 25 731000"
         ],
-        "website": "https://www.agplaw.com",
+        "website": "https://www.agplaw.com/contact-us/limassol/",
+        "contactCheckedOn": "2026-11-26",
         "verifiedDate": "2026-11-19"
       },
       {
@@ -605,10 +606,10 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
           "ru": "1 Lampousas St, 1095 Никосия"
         },
         "phones": [
-          "+357 22 777000",
-          "+357 25 823232"
+          "+357 22 777000"
         ],
-        "website": "https://www.chrysostomides.com",
+        "website": "https://www.chrysostomides.com/contact-us/",
+        "contactCheckedOn": "2026-11-26",
         "verifiedDate": "2026-11-19"
       },
       {
@@ -645,7 +646,8 @@ export const VERIFIED_CATEGORIES: DirectoryCategory[] = [
         "phones": [
           "+357 24 201600"
         ],
-        "website": "https://www.harriskyriakides.law",
+        "website": "https://www.harriskyriakides.law/contact/",
+        "contactCheckedOn": "2026-11-26",
         "verifiedDate": "2026-11-19"
       },
       {

@@ -17,6 +17,9 @@ const lang = Astro.params.lang as Locale;
 const { selection } = Astro.props;
 const category = getSelectionCategory(selection);
 const title = selection.name[lang];
+const introduction = selection.intro[lang];
+const [firstSentence] = introduction.split('. ');
+const description = firstSentence.endsWith('.') ? firstSentence : `${firstSentence}.`;
 const path = getSelectionUrl(lang, selection.slug);
 const categoryUrl = getCategoryUrl(category.slug, lang);
 const parentName = getCategorySeoMeta(category, lang).h1;
@@ -30,7 +33,7 @@ const trail = [
 
 <Layout
   title={title}
-  description={selection.intro[lang].split('. ')[0] + '.'}
+  description={description}
   currentLang={lang}
   currentPath={path}
   schema={[businessList(category, lang, path, title), breadcrumbs(trail)]}
@@ -39,6 +42,13 @@ const trail = [
     currentLang={lang}
     activeCategorySlug={category.slug}
     isCategoryPage
-    selection={{ slug: selection.slug, title, intro: selection.intro[lang], category }}
+    selection={{
+      slug: selection.slug,
+      title,
+      intro: introduction,
+      category,
+      guide: selection.guide,
+      listingNotes: selection.listingNotes,
+    }}
   />
 </Layout>

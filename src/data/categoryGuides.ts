@@ -1,6 +1,6 @@
 import type { Locale } from '../config/siteConfig';
 
-interface DecisionGuide {
+export interface DecisionGuide {
   question: Record<Locale, string>;
   answer: Record<Locale, string>;
   sourceLabel: Record<Locale, string>;

@@ -8,7 +8,7 @@ import { sanitizePhone, sanitizeWhatsApp, stripLeadingEmoji } from '../../../uti
 import { CITY_NAMES } from '../../../data/directoryLocations';
 import { CATEGORY_GUIDES } from '../../../data/categoryGuides';
 import { breadcrumbs, businessSchema } from '../../../data/directorySchema';
-import { getCategoryCityUrl } from '../../../data/directorySelections';
+import { SELECTIONS, getCategoryCityUrl, getSelectionUrl } from '../../../data/directorySelections';
 
 export async function getStaticPaths() {
   const paths: Array<{
@@ -50,6 +50,13 @@ const checkedDate = item.contactCheckedOn && new Intl.DateTimeFormat(currentLang
   dateStyle: 'medium', timeZone: 'UTC',
 }).format(new Date(item.contactCheckedOn));
 const guide = CATEGORY_GUIDES[cat.slug];
+const immigrationSelection = SELECTIONS.find((selection) => selection.category === cat.slug && selection.listingNotes?.[item.id]);
+const immigrationPractice = immigrationSelection?.listingNotes?.[item.id];
+const practiceLabels = {
+  en: ['Immigration services', 'Firm’s immigration practice'],
+  el: ['Υπηρεσίες μετανάστευσης', 'Η μεταναστευτική πρακτική του γραφείου'],
+  ru: ['Иммиграционные услуги', 'Иммиграционная практика фирмы'],
+}[currentLang];
 
 const itemName = item.name[currentLang] || item.name.en;
 const itemDesc = item.description[currentLang] || item.description.en;
@@ -220,6 +227,20 @@ const trail = [
         <p class="mt-4 text-sm text-cti-muted">
           {labels.checked} · <time datetime={item.contactCheckedOn}>{checkedDate}</time>
         </p>
+      )}
+      {immigrationSelection && immigrationPractice && (
+        <section class="mt-4 border-t border-cti-divider pt-4">
+          <h2 class="text-base font-bold">{practiceLabels[0]}</h2>
+          <p class="mt-1 text-sm leading-relaxed">{immigrationPractice.text[currentLang]}</p>
+          <div class="mt-1 flex flex-wrap gap-x-5">
+            <a href={immigrationPractice.source} class="inline-flex min-h-11 items-center text-sm font-semibold underline decoration-cti-gold underline-offset-4">
+              {practiceLabels[1]}
+            </a>
+            <a href={getSelectionUrl(currentLang, immigrationSelection.slug)} class="inline-flex min-h-11 items-center text-sm font-semibold underline decoration-cti-gold underline-offset-4">
+              {immigrationSelection.name[currentLang]}
+            </a>
+          </div>
+        </section>
       )}
       {guide && <a class="mt-3 inline-flex min-h-10 items-center text-sm font-semibold underline decoration-cti-gold underline-offset-4" href={guide.source}>{guide.sourceLabel[currentLang]}</a>}
     </article>

@@ -173,8 +173,9 @@
       "ru": "Одна из крупнейших юридических фирм Кипра с головным офисом в Лимассоле: структурирование бизнеса, налоги Non-Dom и ВНЖ."
     },
     "address": { "en": "195 Makarios III Ave, Neocleous House, 3030 Limassol", "el": "Λεωφ. Μακαρίου ΙΙΙ 195, Neocleous House, 3030 Λεμεσός", "ru": "195 Makarios III Ave, Neocleous House, 3030 Лимассол" },
-    "phones": ["+357 25 110110", "+357 22 110300"],
-    "website": "https://neo.law"
+    "phones": ["+357 25 110110"],
+    "website": "https://neo.law/contact",
+    "contactCheckedOn": "2026-11-26"
   },
   {
     "id": "michael-kyprianou-law",
@@ -189,8 +190,9 @@
       "ru": "Крупная юридическая компания с офисами в Никосии и Лимассоле: проверка недвижимости, оформление ПМЖ и корпоративное право."
     },
     "address": { "en": "17 Stasinou Ave, 1060 Nicosia", "el": "Λεωφ. Στασίνου 17, 1060 Λευκωσία", "ru": "17 Stasinou Ave, 1060 Никосия" },
-    "phones": ["+357 22 757675", "+357 25 508200"],
-    "website": "https://www.kyprianou.com"
+    "phones": ["+357 22 447777"],
+    "website": "https://www.kyprianou.com/contact-us/",
+    "contactCheckedOn": "2026-11-26"
   },
   {
     "id": "agplaw-limassol",
@@ -206,7 +208,8 @@
     },
     "address": { "en": "84 Spyrou Kyprianou Ave, Mesa Geitonia, 4004 Limassol", "el": "Λεωφ. Σπύρου Κυπριανού 84, 4004 Λεμεσός", "ru": "84 Spyrou Kyprianou Ave, Меса Гитония, 4004 Лимассол" },
     "phones": ["+357 25 731000"],
-    "website": "https://www.agplaw.com"
+    "website": "https://www.agplaw.com/contact-us/limassol/",
+    "contactCheckedOn": "2026-11-26"
   },
   {
     "id": "patrikios-legal",
@@ -237,8 +240,9 @@
       "ru": "Ведущая адвокатская коллегия в Никосии и Лимассоле: налоговый режим IP Box, трудовое и корпоративное право."
     },
     "address": { "en": "1 Lampousas St, 1095 Nicosia", "el": "Λαμπούσας 1, 1095 Λευκωσία", "ru": "1 Lampousas St, 1095 Никосия" },
-    "phones": ["+357 22 777000", "+357 25 823232"],
-    "website": "https://www.chrysostomides.com"
+    "phones": ["+357 22 777000"],
+    "website": "https://www.chrysostomides.com/contact-us/",
+    "contactCheckedOn": "2026-11-26"
   },
   {
     "id": "harris-kyriakides-larnaca",
@@ -254,7 +258,8 @@
     },
     "address": { "en": "115 Faneromenis Ave, Antouanettas Bldg, 6031 Larnaca", "el": "Λεωφ. Φανερωμένης 115, 6031 Λάρνακα", "ru": "115 Faneromenis Ave, 6031 Ларнака" },
     "phones": ["+357 24 201600"],
-    "website": "https://www.harriskyriakides.law"
+    "website": "https://www.harriskyriakides.law/contact/",
+    "contactCheckedOn": "2026-11-26"
   },
   {
     "id": "georgiades-pelides",

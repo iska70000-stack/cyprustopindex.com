@@ -1,16 +1,30 @@
 import type { Locale } from '../config/siteConfig';
+import type { DecisionGuide } from './categoryGuides';
 import { getCategoryUrl } from './categorySeo';
 import { isDentalListing } from './directorySchema';
-import { VERIFIED_CATEGORIES, type DirectoryCategory } from './verifiedDirectory';
+import { IMMIGRATION_GUIDE, IMMIGRATION_PRACTICES, type ListingNote } from './immigrationGuide';
+import { VERIFIED_CATEGORIES, type DirectoryCategory, type DirectoryItem } from './verifiedDirectory';
 
 type LocalizedText = Record<Locale, string>;
 
-export const SELECTIONS = [
+export interface DirectorySelection {
+  slug: string;
+  category: string;
+  city?: DirectoryItem['city'];
+  name: LocalizedText;
+  navLabel?: LocalizedText;
+  intro: LocalizedText;
+  listingNotes?: Readonly<Record<string, ListingNote>>;
+  guide?: DecisionGuide;
+}
+
+export const SELECTIONS: DirectorySelection[] = [
   {
     slug: 'law-firms-limassol',
     category: 'lawyers-relocation',
     city: 'Limassol',
     name: { en: 'Law Firms in Limassol', el: 'Δικηγορικά γραφεία στη Λεμεσό', ru: 'Юридические фирмы в Лимассоле' },
+    navLabel: { en: 'Limassol', el: 'Λεμεσός', ru: 'Лимассол' },
     intro: {
       en: 'Compare Limassol law firms for company matters, property and relocation. Before booking, ask who will handle your case, what the initial consultation covers and which language they can use.',
       el: 'Συγκρίνετε δικηγορικά γραφεία στη Λεμεσό για εταιρικά θέματα, ακίνητα και μετεγκατάσταση. Ρωτήστε ποιος θα αναλάβει την υπόθεση, τι καλύπτει η πρώτη συνάντηση και σε ποια γλώσσα γίνεται.',
@@ -22,11 +36,25 @@ export const SELECTIONS = [
     category: 'lawyers-relocation',
     city: 'Nicosia',
     name: { en: 'Law Firms in Nicosia', el: 'Δικηγορικά γραφεία στη Λευκωσία', ru: 'Юридические фирмы в Никосии' },
+    navLabel: { en: 'Nicosia', el: 'Λευκωσία', ru: 'Никосия' },
     intro: {
       en: 'Compare Nicosia law firms for corporate matters, disputes and cross-border work. When contacting a firm, share the jurisdictions involved and ask for the scope, fees and likely next steps in writing.',
       el: 'Συγκρίνετε δικηγορικά γραφεία στη Λευκωσία για εταιρικά θέματα, διαφορές και διασυνοριακές υποθέσεις. Αναφέρετε τις σχετικές δικαιοδοσίες και ζητήστε γραπτώς το αντικείμενο, τις αμοιβές και τα επόμενα βήματα.',
       ru: 'Сравните фирмы Никосии по корпоративному праву, спорам и международным делам. В первом обращении укажите страны, связанные с делом, и попросите письменно описать объём работ, оплату и следующие шаги.',
     },
+  },
+  {
+    slug: 'immigration-lawyers',
+    category: 'lawyers-relocation',
+    name: { en: 'Immigration Lawyers in Cyprus', el: 'Δικηγόροι μετανάστευσης στην Κύπρο', ru: 'Иммиграционные юристы на Кипре' },
+    navLabel: { en: 'Immigration lawyers', el: 'Δικηγόροι μετανάστευσης', ru: 'Иммиграционные юристы' },
+    intro: {
+      en: 'Compare immigration law firms in Limassol, Nicosia and Larnaca for residence, work and family applications.',
+      el: 'Συγκρίνετε δικηγορικά γραφεία σε Λεμεσό, Λευκωσία και Λάρνακα για άδειες διαμονής, εργασίας και οικογενειακές αιτήσεις.',
+      ru: 'Сравните юридические фирмы в Лимассоле, Никосии и Ларнаке по вопросам ВНЖ, разрешений на работу и семейной релокации.',
+    },
+    listingNotes: IMMIGRATION_PRACTICES,
+    guide: IMMIGRATION_GUIDE,
   },
   {
     slug: 'dentists',
@@ -38,21 +66,21 @@ export const SELECTIONS = [
       ru: 'Найдите стоматологии в Лимассоле, Никосии и Ларнаке. Сравните специализации и уточните, что входит в первичный приём, работает ли клиника с GeSY и какие услуги оплачиваются отдельно.',
     },
   },
-] satisfies Array<{
-  slug: string;
-  category: string;
-  city?: string;
-  name: LocalizedText;
-  intro: LocalizedText;
-}>;
+];
 
-export function getSelectionCategory(selection: (typeof SELECTIONS)[number]): DirectoryCategory {
+export function getSelectionCategory(selection: DirectorySelection): DirectoryCategory {
   const category = VERIFIED_CATEGORIES.find((cat) => cat.slug === selection.category);
   if (!category) throw new Error(`Missing category for ${selection.slug}`);
 
-  const items = 'city' in selection
-    ? category.items.filter((item) => item.city === selection.city)
-    : category.items.filter(isDentalListing);
+  const { city, listingNotes } = selection;
+  const items = city
+    ? category.items.filter((item) => item.city === city)
+    : listingNotes
+      ? category.items.filter((item) => Object.hasOwn(listingNotes, item.id))
+      : category.items.filter(isDentalListing);
+  if (listingNotes && items.length !== Object.keys(listingNotes).length) {
+    throw new Error(`Missing listing for ${selection.slug}`);
+  }
   return { ...category, items };
 }
 
