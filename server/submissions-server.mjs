@@ -8,6 +8,7 @@ const PORT = Number(process.env.CTI_SERVER_PORT || 4391);
 const HOST = process.env.CTI_SERVER_HOST || '127.0.0.1';
 const DATA_DIR = process.env.CTI_DATA_DIR || '/var/lib/cyprustopindex';
 const INTERNAL_SECRET = process.env.CTI_INTERNAL_SECRET || '';
+const TELEGRAM_MODERATION_BUTTONS = process.env.CTI_TELEGRAM_MODERATION_BUTTONS !== 'false';
 const ALLOWED_ORIGINS = new Set([
   'https://cyprustopindex.com',
   'https://www.cyprustopindex.com',
@@ -100,8 +101,12 @@ function validateSubmissionPayload(body) {
     errors.push('Valid +357 phone number is required');
   }
   const description = String(body.description || '').trim();
-  if (description.length < 10 || description.length > 600) {
-    errors.push('Description must be 10-600 characters');
+  if (description.length < 10 || description.length > 150) {
+    errors.push('Description must be 10-150 characters');
+  }
+  const email = String(body.applicantEmail || '').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 160) {
+    errors.push('Valid applicant email is required');
   }
   return errors;
 }
@@ -145,12 +150,13 @@ async function sendTelegramModerationCard(submission, payload) {
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(8000),
       body: JSON.stringify({
         chat_id: chatId,
         text,
         parse_mode: 'HTML',
         disable_web_page_preview: true,
-        reply_markup: replyMarkup,
+        ...(TELEGRAM_MODERATION_BUTTONS ? { reply_markup: replyMarkup } : {}),
       }),
     });
     const data = await res.json();
@@ -252,7 +258,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (req.method === 'POST' && url.pathname === '/internal/moderation') {
-    if (INTERNAL_SECRET && req.headers['x-internal-secret'] !== INTERNAL_SECRET) {
+    if (!INTERNAL_SECRET || req.headers['x-internal-secret'] !== INTERNAL_SECRET) {
       return sendJson(res, 403, { ok: false, error: 'Forbidden' }, origin);
     }
 

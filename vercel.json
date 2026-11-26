@@ -6,7 +6,7 @@
     { "source": "/ru/kliniki-stomatologiya/adamantio-dental-limassol/", "destination": "/ru/kliniki-stomatologiya/adamantio-dental-nicosia/", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/api/submissions", "destination": "https://api.bakutopindex.com/api/submissions" }
+    { "source": "/api/submissions", "destination": "https://api.bakutopindex.com/api/cyprus/submissions" }
   ],
   "headers": [
     {
